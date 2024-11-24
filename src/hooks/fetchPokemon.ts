@@ -53,7 +53,7 @@ export function useGetSpecificPokemonSearch(pokeTerm: string, setLoading: React.
         async function fetchPokemons(){
             setLoading(true);
             try {
-                if (pokeTerm){
+                if (pokeTerm && pokeTerm !== ''){
                     const data = await getSpecificPokemonSearch(pokeTerm);
                     setUrl([data.data.sprites.front_default])
                 }
@@ -66,7 +66,9 @@ export function useGetSpecificPokemonSearch(pokeTerm: string, setLoading: React.
             }
         }
 
-        fetchPokemons();
+        if (pokeTerm){
+            fetchPokemons();
+        }
     },[setUrl, pokeTerm, setLoading])
 }
 
@@ -87,5 +89,5 @@ export function useGetSpecificPokemonDesc(pokemonId: number, setLoading: React.D
         }
 
         fetchPokemons();
-    },[pokemonId, setLoading])
+    },[setPokemon, pokemonId, setLoading])
 }

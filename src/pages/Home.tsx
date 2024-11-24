@@ -6,6 +6,7 @@ import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon, useGetSpecificPokemonSearch } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';
 import { useNavigate } from 'react-router-dom';
+import { PokeBallLoading } from '../utils/PokeBallLoading';
 
 export type Pokemon = {
     name: string;
@@ -78,16 +79,7 @@ export function Home(){
                     <ImageList> 
                         {url.map((poke) => (
                             <Paper key={poke.split('/').pop()?.split('.')[0] as string} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
-                                {loading ? <CatchingPokemonIcon fontSize='large' sx={{margin: 'auto', display: 'block', color: '#CC0000', animation: 'spin 1s linear infinite',
-                                    "@keyframes spin": {
-                                        "0%": {
-                                            transform: "rotate(360deg)",
-                                        },
-                                        "100%": {
-                                            transform: "rotate(0deg)"
-                                        }
-                                    }
-                                }}/> : <img onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} src={poke ? poke : ''} style={{display: 'block', margin: 'auto', width: '150px', height: '150px'}}/>}
+                                {loading ? <PokeBallLoading/> : <img onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} src={poke ? poke : ''} style={{display: 'block', margin: 'auto', width: '150px', height: '150px'}}/>}
                             </Paper>
                         ))}
                     </ImageList>    

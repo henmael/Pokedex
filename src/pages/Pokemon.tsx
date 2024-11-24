@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useGetSpecificPokemonDesc } from "../hooks/fetchPokemon"
 import { useState } from "react";
+import { PokeBallLoading } from "../utils/PokeBallLoading";
+import { Box } from "@mui/material";
 
 export type SpecificPokemon = {
     id: number;
@@ -22,6 +24,14 @@ export function SecondPage(){
     const [loading, setLoading] = useState<boolean>(false);
     const [pokemon, setPokemon] = useState<SpecificPokemon>();
     useGetSpecificPokemonDesc(Number(pokemonId), setLoading, setPokemon);
+
+    if (loading){
+        return (
+            <Box display='flex' alignItems='center' justifyItems='center' height='100vh' margin={0}>
+                <PokeBallLoading/>
+            </Box>
+        )
+    }
 
     return (
         <>

@@ -1,26 +1,29 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { Pokemon } from "../pages/Home";
 import { getPokemon } from "../api/getPokemon";
 import { getSpecificPokemon } from "../api/getSpecificPokemon";
+import { getSpecificPokemonSearch } from "../api/getSpecificPokemonSearch";
 
-export function useGetAllPokemons(limit: number, offset: number, setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>){
-    useEffect(() => {
+export function useGetAllPokemons(pokeTerm: string, limit: number, offset: number, setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>){
+    useMemo(() => {
         async function fetchTypes() {
             try {
-                const data = await getPokemon(limit, offset);
-                setPokemon(data.data.results);
-                
+                if (!pokeTerm){
+                    const data = await getPokemon(limit, offset);
+                    setPokemon(data.data.results);
+                }
+   
             } catch (error) {
                 console.error('Error fetching types:', error);
             }
         }
         fetchTypes();
-    }, [limit, offset]);
+    }, [limit, offset, setPokemon]);
 }
 
 export function useGetSpecificPokemon(pokemon: Pokemon[], setLoading: React.Dispatch<React.SetStateAction<boolean>>,
                                         setUrl: React.Dispatch<React.SetStateAction<string[]>>){
-    useEffect(() => {
+    useMemo(() => {
         async function fetchPokemons(){
             setLoading(true);
             try {
@@ -40,5 +43,28 @@ export function useGetSpecificPokemon(pokemon: Pokemon[], setLoading: React.Disp
         }
 
         fetchPokemons();
-    },[pokemon])
+    },[setUrl, pokemon, setLoading])
+}
+
+export function useGetSpecificPokemonSearch(pokeTerm: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
+                                            setUrl:React.Dispatch<React.SetStateAction<string[]>>){
+    useMemo(() => {
+        async function fetchPokemons(){
+            setLoading(true);
+            try {
+                if (pokeTerm){
+                    const data = await getSpecificPokemonSearch(pokeTerm);
+                    setUrl([data.data.sprites.front_default])
+                }
+
+            }catch(error){
+                console.error('Error fetching types: ', error);
+            }
+            finally{
+                setLoading(false);
+            }
+        }
+
+        fetchPokemons();
+    },[setUrl, pokeTerm, setLoading])
 }

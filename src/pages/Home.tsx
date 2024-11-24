@@ -1,11 +1,11 @@
 import { Search } from '@mui/icons-material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
-import { Box, Button, CircularProgress, Container, FormControl, IconButton, ImageList, InputBase, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack } from '@mui/material';
+import { Box, Button, Container, FormControl, IconButton, ImageList, InputBase, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getType } from '../getType';
-import { getPokemon } from '../getPokemon';
-import { getSpecificPokemon } from '../getSpecificPokemon';
-import { getSpecificTypePokemon } from '../getSpecificTypePokemon';
+import { getPokemon } from '../api/getPokemon';
+import { getSpecificPokemon } from '../api/getSpecificPokemon';
+import { getSpecificTypePokemon } from '../api/getSpecificTypePokemon';
 
 interface FormsProps{
     label: string;
@@ -177,7 +177,7 @@ export function Home(){
                         ))}
                     </ImageList>    
                 </Stack>
-               {pokemon.length > 20 ?  '' : 
+               {type1 ? '' : 
                <Button onClick={handleOnClickMore} style={{color: 'white', backgroundColor: 'black', 
                 margin: 'auto', textAlign: 'center', 
                 borderRadius: 10, fontSize: 20, 

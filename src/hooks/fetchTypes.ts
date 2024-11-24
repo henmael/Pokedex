@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { Pokemon } from "../pages/Home";
 

@@ -1,10 +1,11 @@
 import { Search } from '@mui/icons-material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import { Box, Button, Container, IconButton, ImageList, InputBase, Paper, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon, useGetSpecificPokemonSearch } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';
+import { useNavigate } from 'react-router-dom';
 
 export type Pokemon = {
     name: string;
@@ -16,6 +17,9 @@ export function Home(){
     const [url, setUrl] = useState<string[]>([]);
     const [type, setType] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+
+    
+    const navigate = useNavigate();
 
     const [search, setSearch] = useState<string>('');
     const [searchSpecificPokemon, setSearchSpecificPokemon] = useState<string>(sessionStorage.getItem('pokemon') ?? '');
@@ -45,6 +49,10 @@ export function Home(){
         setSearchSpecificPokemon(search);
     }
 
+    const handleOnClickPokemonDesc = (pokeId: string) => {
+        navigate('/pokemon/'+pokeId);
+    }
+
     return (
             <Container style={{display: 'flex', flexDirection: 'column', justifyContent: 'stretch'}}>
                 <IconButton style={{ alignSelf: 'flex-start' }}>
@@ -68,8 +76,8 @@ export function Home(){
                 </Box>
                 <Stack>
                     <ImageList> 
-                        {url.map((poke, index) => (
-                            <Paper key={index} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
+                        {url.map((poke) => (
+                            <Paper key={poke.split('/').pop()?.split('.')[0] as string} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
                                 {loading ? <CatchingPokemonIcon fontSize='large' sx={{margin: 'auto', display: 'block', color: '#CC0000', animation: 'spin 1s linear infinite',
                                     "@keyframes spin": {
                                         "0%": {
@@ -79,7 +87,7 @@ export function Home(){
                                             transform: "rotate(0deg)"
                                         }
                                     }
-                                }}/> : <img src={poke ? poke : ''} style={{display: 'block', margin: 'auto', width: '150px', height: '150px'}}/>}
+                                }}/> : <img onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} src={poke ? poke : ''} style={{display: 'block', margin: 'auto', width: '150px', height: '150px'}}/>}
                             </Paper>
                         ))}
                     </ImageList>    

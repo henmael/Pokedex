@@ -10,7 +10,7 @@ function App() {
       <div>
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='/pokemon' element={<SecondPage/>}/>
+          <Route path='/pokemon/:pokemonId' element={<SecondPage/>}/>
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { Pokemon } from "../pages/Home";
 
 export function useGetSpecificType(setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
                             type: string, 
                             setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>){
-    useMemo(() => {
+    useEffect(() => {
         async function fetchTypes() {
             setLoading(true);
             try {

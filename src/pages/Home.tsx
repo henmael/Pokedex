@@ -1,7 +1,7 @@
 import { Search } from '@mui/icons-material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import { Box, Button, Container, IconButton, ImageList, InputBase, Paper, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon, useGetSpecificPokemonSearch } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';
@@ -44,8 +44,6 @@ export function Home(){
     const handleOnClickSearch = () => {
         setSearchSpecificPokemon(search);
     }
-
-    console.log(url)
 
     return (
             <Container style={{display: 'flex', flexDirection: 'column', justifyContent: 'stretch'}}>

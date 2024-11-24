@@ -1,58 +1,14 @@
 import { Search } from '@mui/icons-material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
-import { Box, Button, Container, FormControl, IconButton, ImageList, InputBase, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { getType } from '../getType';
-import { getPokemon } from '../api/getPokemon';
-import { getSpecificPokemon } from '../api/getSpecificPokemon';
-import { getSpecificTypePokemon } from '../api/getSpecificTypePokemon';
+import { Box, Button, Container, IconButton, ImageList, InputBase, Paper, Stack } from '@mui/material';
+import { useState } from 'react';
+import Forms from '../components/Forms';
+import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
+import { useGetSpecificType } from '../hooks/fetchTypes';
 
-interface FormsProps{
-    label: string;
-    setType: React.Dispatch<React.SetStateAction<string>>;
-    type: string;
-}
-
-type Pokemon = {
+export type Pokemon = {
     name: string;
     url: string;
-}
-
-type PokemonType = {
-    name: string;
-    url: string;
-}
-
-function Forms({label, setType, type}: FormsProps){
-    const [localtType, setLocalType] = useState<PokemonType[]>([]);
-
-    useEffect(() => {
-        async function fetchTypes() {
-            try {
-                const data = await getType();
-                setLocalType(data.data.results);
-            } catch (error) {
-                console.error('Error fetching types:', error);
-            }
-        }
-        fetchTypes();
-    }, []);
-
-    return (
-        <FormControl fullWidth style={{backgroundColor: '#CC0000', borderRadius: 10}}>
-        <InputLabel style={{color: 'white'}}>{label}</InputLabel>
-        <Select
-            value={type}
-            label={label}
-            style={{color: 'white'}}
-            onChange={(e: SelectChangeEvent) => setType(e.target.value as string)}
-        >
-            {localtType.map((type, index) => (
-                <MenuItem key={index} value={type.name}>{type.name}</MenuItem>
-            ))}
-        </Select>
-    </FormControl>
-    )
 }
 
 export function Home(){
@@ -63,77 +19,11 @@ export function Home(){
     const [limit, setLimit] = useState(20);
     const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {
-        async function fetchTypes() {
-            setLoading(true);
-            try {
-                const data = await getSpecificTypePokemon(type1);
-                if (data.data.pokemon){
-                    const poke = data.data.pokemon;
-                    const details = poke.map((item: { pokemon: { url: any; }; }) => ({
-                        name: item.pokemon.url,
-                        url: item.pokemon.url
-                    }))
-                    if (type1)
-                        setPokemon(details);
-                }
-            } catch (error) {
-                console.error('Error fetching types:', error);
-            }finally{
-                setLoading(false);
-            }
-        }
-        fetchTypes();
-    }, [type1]);
+    useGetSpecificType(setLoading, type1, setPokemon);
 
+    useGetAllPokemons(limit, offset, setPokemon);
 
-    useEffect(() => {
-        async function fetchTypes() {
-            try {
-                const data = await getPokemon(limit, offset);
-                setPokemon(data.data.results);
-                
-            } catch (error) {
-                console.error('Error fetching types:', error);
-            }
-        }
-        fetchTypes();
-    }, [limit, offset]);
-
-    useEffect(() => {
-        async function fetchTypes() {
-            try {
-                const data = await getPokemon(limit, offset);
-                setPokemon(data.data.results);
-                
-            } catch (error) {
-                console.error('Error fetching types:', error);
-            }
-        }
-        fetchTypes();
-    }, [limit, offset]);
-
-    useEffect(() => {
-        async function fetchPokemons(){
-            setLoading(true);
-            try {
-                const newUrls = await Promise.all(
-                    pokemon.map(async (poke) => {
-                        const data = await getSpecificPokemon(poke.url);
-                        return data.data.sprites.front_default;
-                    })
-                );
-                setUrl(newUrls);
-            }catch(error){
-                console.error('Error fetching types: ', error);
-            }
-            finally{
-                setLoading(false);
-            }
-        }
-
-        fetchPokemons();
-    },[pokemon])
+    useGetSpecificPokemon(pokemon, setLoading, setUrl);
 
     const handleOnClickMore = () => {
         setLimit(limit+20);
@@ -156,7 +46,7 @@ export function Home(){
                     </Paper>
                 </Stack>
                 <Box display='flex' gap={2} marginBottom={5} borderRadius={10}>
-                    <Forms  label={'Type 1'} setType={setType1} type={type1}/>
+                    <Forms  label={'Type'} setType={setType1} type={type1}/>
                 </Box>
                 <Stack>
                     <ImageList>

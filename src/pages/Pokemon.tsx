@@ -2,11 +2,8 @@ import { useParams } from "react-router-dom";
 import { useGetSpecificPokemonDesc } from "../hooks/fetchPokemon"
 import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
-import { Box, Card, CardMedia, Container, Paper, TextField, Typography } from "@mui/material";
-import { Title } from "@mui/icons-material";
-import { green } from "@mui/material/colors";
+import { Box, Card, CardMedia, Container, Typography } from "@mui/material";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
-import { useGetSpecificType } from "../hooks/fetchTypes";
 
 export type SpecificPokemon = {
     id: number;

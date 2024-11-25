@@ -2,6 +2,18 @@ import { useEffect } from "react";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { Pokemon } from "../pages/Home";
 
+type PokemonSpecificType = {
+    id: number,
+    name: string,
+    pokemon: PokemonSpecifcTypeDetail
+}
+
+type PokemonSpecifcTypeDetail = {
+    slot: number; // The slot number (1 or 2 for dual types)
+    name: string; 
+    url: string; // URL for more information on the type
+};
+
 export function useGetSpecificType(setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
                             type: string, 
                             setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>){
@@ -12,12 +24,11 @@ export function useGetSpecificType(setLoading: React.Dispatch<React.SetStateActi
                 const data = await getSpecificType(type);
                 if (data.data.pokemon){
                     const poke = data.data.pokemon;
-                    const details = poke.map((item: { pokemon: { url: {name: string, url: string}; }; }) => ({
-                        name: item.pokemon.url,
-                        url: item.pokemon.url
+                    const details = poke.map((pokemon: PokemonSpecificType) => ({
+                        name: pokemon.pokemon.name,
+                        url: pokemon.pokemon.url
                     }))
-                    if (type)
-                        setPokemon(details);
+                    setPokemon(details);
                 }
             } catch (error) {
                 console.error('Error fetching types:', error);

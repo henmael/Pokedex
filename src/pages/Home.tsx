@@ -77,8 +77,8 @@ export function Home(){
                 </Box>
                 <Stack>
                     <ImageList> 
-                        {url.map((poke) => (
-                            <Paper key={poke.split('/').pop()?.split('.')[0] as string} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
+                        {url.map((poke, index) => (
+                            <Paper key={index} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
                                 {loading ? <PokeBallLoading/> : <img onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} src={poke ? poke : ''} style={{display: 'block', margin: 'auto', width: '150px', height: '150px'}}/>}
                             </Paper>
                         ))}

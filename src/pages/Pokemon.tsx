@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetSpecificPokemonDesc } from "../hooks/fetchPokemon"
 import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
-import { Box, Card, CardMedia, Container, Typography } from "@mui/material";
+import { Box, Card, CardMedia, Container, Paper, Stack, Typography } from "@mui/material";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
 
@@ -70,16 +70,22 @@ export function SecondPage(){
 
     return (
         <Container>
-            <Box alignItems='center' textAlign='center'>
+            <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center'>
                 <Typography variant="h4">{pokemonName}</Typography>
-                <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30}}>
+                <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
                 </Card>
-                <Box display='flex' gap={2} mt={2}>
-                    {typeImageUrl.map((image, index) => (
-                        <CardMedia width={10} key={index} component='img' image={image}/>
+                <Box display='flex' gap={2} mt={2} maxWidth={200} maxHeight={200} marginRight='auto' marginLeft='auto'>
+                    {typeImageUrl.length > 2 ? (
+                        ''
+                    ) : typeImageUrl.map((image, index) => (
+                        <CardMedia key={index} component='img' image={image}/>
                     ))}
                 </Box>
+                <Typography>
+                    Weight: {pokemon?.weight} kg <br/>
+                    Height: {pokemon?.height} m
+                </Typography>
             </Box>
         </Container>
     )

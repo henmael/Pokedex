@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
 import { Box, Card, CardMedia, Container, Typography } from "@mui/material";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
+import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
 
 export type SpecificPokemon = {
     id: number;
@@ -42,6 +43,8 @@ export function SecondPage(){
 
     const [typeImageUrl, setTypeImageUrl] = useState<string[]>([]);
 
+    const pokemonName = firstLetterUpperCase(pokemon?.name as string);
+
     useEffect(() => {
         const fetchTypeImages = async () => {
             if (!pokemon?.types) return;
@@ -68,14 +71,15 @@ export function SecondPage(){
     return (
         <Container>
             <Box alignItems='center' textAlign='center'>
-                <Typography variant="h4">{pokemon?.name}</Typography>
+                <Typography variant="h4">{pokemonName}</Typography>
                 <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30}}>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
                 </Card>
-                {typeImageUrl.map((image, index) => (
-                    <CardMedia key={index} component='img' image={image}/>
-                ))}
-                
+                <Box display='flex' gap={2} mt={2}>
+                    {typeImageUrl.map((image, index) => (
+                        <CardMedia width={10} key={index} component='img' image={image}/>
+                    ))}
+                </Box>
             </Box>
         </Container>
     )

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetSpecificPokemonDesc, useGetSpecificPokemonSpecies } from "../hooks/fetchPokemon"
 import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
-import { Box, Button, Card, CardMedia, Collapse, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardMedia, Chip, Collapse, Container, Paper, Stack, Typography } from "@mui/material";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
 
@@ -14,12 +14,6 @@ export type SpecificPokemon = {
     weight?: number; // Weight can be optional
     sprites: Sprites;
     types: TypeDetail[];
-    // abilities: Ability[];
-    // cries: Cry;
-    // forms: Form[];
-    // game_indices: GameIndex[];
-    // held_items?: HeldItem[]; // Optional, as it's currently empty
-    // moves: Move[];
 };
 
 export type FlavorTextVersion = {
@@ -97,7 +91,11 @@ export function SecondPage(){
                 <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
                 </Card>
-                <Box display='flex' gap={2} mt={2} marginRight='auto' marginLeft='auto'>
+                <Stack direction='row' gap={2} justifyContent='center'>
+                    <Chip label={`${pokemon?.weight} kg`} color="success"/>
+                    <Chip label={`${pokemon?.height} m`} color="success"/>
+                </Stack>
+                <Box display='flex' gap={2} mt={2} marginRight='auto' width='40%' marginLeft='auto'>
                     {typeImageUrl.length > 2 ? (
                         ''
                     ) : typeImageUrl.map((image, index) => (
@@ -106,6 +104,7 @@ export function SecondPage(){
                 </Box>
                 <Paper sx={{padding: 5, backgroundColor: 'black', borderRadius: 10, marginTop: 2}}>
                     <Collapse in={checked} collapsedSize={350}>
+                        <Typography color="white" variant="h4" mb={3}>DESCRIPTION</Typography>
                         {pokemonEntry && pokemonEntry.map((entryText, index) => (
                                     <Stack key={index}>
                                         <Typography variant="h5" color="white">

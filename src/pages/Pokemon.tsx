@@ -22,6 +22,11 @@ export type SpecificPokemon = {
     // moves: Move[];
 };
 
+export type FlavorTextVersion = {
+    flavor_text: string;
+    version: string;
+}
+
 type Sprites = {
     front_default: string;
 }
@@ -39,7 +44,7 @@ export function SecondPage(){
     const {pokemonId} = useParams();
     const [loading, setLoading] = useState<boolean>(false);
     const [pokemon, setPokemon] = useState<SpecificPokemon>();
-    const [pokemonEntry, setPokemonEntry] = useState<string[]>();
+    const [pokemonEntry, setPokemonEntry] = useState<FlavorTextVersion[]>([]);
     useGetSpecificPokemonDesc(Number(pokemonId), setLoading, setPokemon);
 
     const [checked, setChecked] = useState(false);
@@ -101,10 +106,15 @@ export function SecondPage(){
                 </Box>
                 <Paper sx={{padding: 5, backgroundColor: 'black', borderRadius: 10, marginTop: 2}}>
                     <Collapse in={checked} collapsedSize={350}>
-                        {pokemonEntry && pokemonEntry.map((entryText) => (
-                                    <Typography color="white" textAlign='left' marginBottom={2}>
-                                        {entryText}
-                                    </Typography>
+                        {pokemonEntry && pokemonEntry.map((entryText, index) => (
+                                    <Stack key={index}>
+                                        <Typography variant="h5" color="white">
+                                        {firstLetterUpperCase(entryText.version)}
+                                        </Typography>
+                                        <Typography color="white" textAlign='left' marginBottom={2}>
+                                            {entryText.flavor_text}
+                                        </Typography>
+                                    </Stack>
                                 ))}
                         </Collapse>
                     <Button style={{color: '#CC0000'}} onClick={handleChange}>{textButton}</Button>

@@ -3,7 +3,7 @@ import { Pokemon } from "../pages/Home";
 import { getPokemon } from "../api/getPokemon";
 import { getSpecificPokemon } from "../api/getSpecificPokemon";
 import { getSpecificPokemonSearch } from "../api/getSpecificPokemonSearch";
-import { SpecificPokemon } from "../pages/Pokemon";
+import { FlavorTextVersion, SpecificPokemon } from "../pages/Pokemon";
 import { getSpecificPokemonSpecies } from "../api/getSpecificPokemonSpecies";
 
 export function useGetAllPokemons(pokeTerm: string, limit: number, offset: number, setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>){
@@ -92,21 +92,22 @@ export function useGetSpecificPokemonDesc(pokemonId: number, setLoading: React.D
         fetchPokemons();
     },[setPokemon, pokemonId, setLoading])
 }
-
-export function useGetSpecificPokemonSpecies(pokemonId: number, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setPokemonEntry: React.Dispatch<React.SetStateAction<string[] | undefined>>){
+//
+export function useGetSpecificPokemonSpecies(pokemonId: number, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setPokemonEntry: React.Dispatch<React.SetStateAction<FlavorTextVersion[]>>){
     useEffect(() => {
         async function fetchPokemons(){
             setLoading(true);
             try {
                     const data = await getSpecificPokemonSpecies(pokemonId);
-                    // const englishText = data.data.flavor_text_entries.filter((lang: {language: {name: string}}) => lang.language.name === 'en').map((text: {flavor_text: string}) => text.flavor_text);
+
                     const englishText = data.data.flavor_text_entries.filter((lang: {language: {name: string}}) => lang.language.name === 'en');
                     const removeDuplicate = englishText.filter((data: {flavor_text: string}, index: number, self: any) => {
                         const normalizedFlavorText = data.flavor_text.trim().replace(/\s+/g, ' ');
                         return index === self.findIndex((t: {flavor_text: string}) => t.flavor_text.trim().replace(/\s+/g, ' ') === normalizedFlavorText)
-                    }).map((text: {flavor_text: string}) => text.flavor_text)
+                    }).map((data: {flavor_text: string, version: {name: string}}) => { return {version: data.version.name, flavor_text: data.flavor_text}});
+
                     if (removeDuplicate.length > 0)
-                        setPokemonEntry(removeDuplicate);
+                        setPokemonEntry((prev) => [...prev, ...removeDuplicate]);
 
 
             }catch(error){

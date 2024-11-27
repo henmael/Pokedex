@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetSpecificPokemonDesc } from "../hooks/fetchPokemon"
+import { useGetSpecificPokemonDesc, useGetSpecificPokemonSpecies } from "../hooks/fetchPokemon"
 import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
 import { Box, Card, CardMedia, Container, Paper, Stack, Typography } from "@mui/material";
@@ -39,7 +39,10 @@ export function SecondPage(){
     const {pokemonId} = useParams();
     const [loading, setLoading] = useState<boolean>(false);
     const [pokemon, setPokemon] = useState<SpecificPokemon>();
+    const [pokemonEntry, setPokemonEntry] = useState<string[]>();
     useGetSpecificPokemonDesc(Number(pokemonId), setLoading, setPokemon);
+    
+    useGetSpecificPokemonSpecies(Number(pokemonId), setLoading, setPokemonEntry);
 
     const [typeImageUrl, setTypeImageUrl] = useState<string[]>([]);
 
@@ -51,9 +54,11 @@ export function SecondPage(){
             const newTypeImages = await Promise.all(
                 pokemon.types.map(async (type) => {
                         const data = await getSpecificType(type.type.name);
-                        return data.data.sprites['generation-iii'].emerald.name_icon;
+                        return data.data.sprites['generation-vi']['omega-ruby-alpha-sapphire'].name_icon;
                 })
             );
+
+            
             setTypeImageUrl((prev) => [...prev, ...newTypeImages]);
         };
     
@@ -70,7 +75,7 @@ export function SecondPage(){
 
     return (
         <Container>
-            <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center'>
+            <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center' >
                 <Typography variant="h4">{pokemonName}</Typography>
                 <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
@@ -84,8 +89,15 @@ export function SecondPage(){
                 </Box>
                 <Typography>
                     Weight: {pokemon?.weight} kg <br/>
-                    Height: {pokemon?.height} m
+                    Height: {pokemon?.height} m <br/>
                 </Typography>
+                <Paper sx={{padding: 5, backgroundColor: 'black'}}>
+                    {pokemonEntry && pokemonEntry.map((entryText) => (
+                        <Typography color="white">
+                            {entryText}
+                        </Typography>
+                    ))}
+                </Paper>
             </Box>
         </Container>
     )

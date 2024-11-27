@@ -4,6 +4,7 @@ import { getPokemon } from "../api/getPokemon";
 import { getSpecificPokemon } from "../api/getSpecificPokemon";
 import { getSpecificPokemonSearch } from "../api/getSpecificPokemonSearch";
 import { SpecificPokemon } from "../pages/Pokemon";
+import { getSpecificPokemonSpecies } from "../api/getSpecificPokemonSpecies";
 
 export function useGetAllPokemons(pokeTerm: string, limit: number, offset: number, setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>){
     useEffect(() => {
@@ -13,7 +14,7 @@ export function useGetAllPokemons(pokeTerm: string, limit: number, offset: numbe
                     const data = await getPokemon(limit, offset);
                     setPokemon(data.data.results);
                 }
-   
+
             } catch (error) {
                 console.error('Error fetching types:', error);
             }
@@ -47,7 +48,7 @@ export function useGetSpecificPokemon(pokemon: Pokemon[], setLoading: React.Disp
     },[setUrl, pokemon, setLoading])
 }
 
-export function useGetSpecificPokemonSearch(pokeTerm: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>, 
+export function useGetSpecificPokemonSearch(pokeTerm: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>,
                                             setUrl:React.Dispatch<React.SetStateAction<string[]>>){
     useEffect(() => {
         async function fetchPokemons(){
@@ -90,4 +91,32 @@ export function useGetSpecificPokemonDesc(pokemonId: number, setLoading: React.D
 
         fetchPokemons();
     },[setPokemon, pokemonId, setLoading])
+}
+
+export function useGetSpecificPokemonSpecies(pokemonId: number, setLoading: React.Dispatch<React.SetStateAction<boolean>>, setPokemonEntry: React.Dispatch<React.SetStateAction<string[] | undefined>>){
+    useEffect(() => {
+        async function fetchPokemons(){
+            setLoading(true);
+            try {
+                    const data = await getSpecificPokemonSpecies(pokemonId);
+                    // const englishText = data.data.flavor_text_entries.filter((lang: {language: {name: string}}) => lang.language.name === 'en').map((text: {flavor_text: string}) => text.flavor_text);
+                    const englishText = data.data.flavor_text_entries.filter((lang: {language: {name: string}}) => lang.language.name === 'en');
+                    const removeDuplicate = englishText.filter((data: {flavor_text: string}, index: number, self: any) => {
+                        const normalizedFlavorText = data.flavor_text.trim().replace(/\s+/g, ' ');
+                        return index === self.findIndex((t: {flavor_text: string}) => t.flavor_text.trim().replace(/\s+/g, ' ') === normalizedFlavorText)
+                    }).map((text: {flavor_text: string}) => text.flavor_text)
+                    if (removeDuplicate.length > 0)
+                        setPokemonEntry(removeDuplicate);
+
+
+            }catch(error){
+                console.error('Error fetching types: ', error);
+            }
+            finally{
+                setLoading(false);
+            }
+        }
+
+        fetchPokemons();
+    },[pokemonId, setLoading])
 }

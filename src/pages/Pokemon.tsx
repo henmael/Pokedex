@@ -88,13 +88,10 @@ export function SecondPage(){
         <Container>
             <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center' >
                 <Typography variant="h4">{pokemonName}</Typography>
-                <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
+                <Card style={{alignItems: 'center', justifyContent: 'center' ,backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
+                    <Typography textAlign='left' ml={2} fontSize={25} color='white'>#{pokemonId}</Typography>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
                 </Card>
-                <Stack direction='row' gap={2} justifyContent='center'>
-                    <Chip label={`${pokemon?.weight} kg`} color="success"/>
-                    <Chip label={`${pokemon?.height} m`} color="success"/>
-                </Stack>
                 <Box display='flex' gap={2} mt={2} marginRight='auto' width='40%' marginLeft='auto'>
                     {typeImageUrl.length > 2 ? (
                         ''
@@ -102,6 +99,10 @@ export function SecondPage(){
                         <CardMedia key={index} component='img' image={image}/>
                     ))}
                 </Box>
+                <Stack direction='row' gap={2} justifyContent='center'>
+                    <Chip label={`${pokemon?.weight} kg`} color="success"/>
+                    <Chip label={`${pokemon?.height} m`} color="success"/>
+                </Stack>
                 <Paper sx={{padding: 5, backgroundColor: 'black', borderRadius: 10, marginTop: 2}}>
                     <Collapse in={checked} collapsedSize={350}>
                         <Typography color="white" variant="h4" mb={3}>DESCRIPTION</Typography>

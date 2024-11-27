@@ -3,9 +3,9 @@ import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import { Box, Button, Container, IconButton, ImageList, InputBase, Paper, Stack } from '@mui/material';
 import { useState } from 'react';
 import Forms from '../components/Forms';
-import { useGetAllPokemons, useGetSpecificPokemon, useGetSpecificPokemonSearch } from '../hooks/fetchPokemon';
+import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PokeBallLoading } from '../utils/PokeBallLoading';
 
 export type Pokemon = {
@@ -18,41 +18,41 @@ export function Home(){
     const [url, setUrl] = useState<string[]>([]);
     const [type, setType] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(false);
+    const [searchParams, setSearchParams] = useSearchParams();
 
+    const query = searchParams.get('query') ?? '';
     
     const navigate = useNavigate();
-
-    const [search, setSearch] = useState<string>('');
-    const [searchSpecificPokemon, setSearchSpecificPokemon] = useState<string>(sessionStorage.getItem('pokemon') ?? '');
-
-    sessionStorage.setItem('pokemon', searchSpecificPokemon);
-
-    useGetSpecificPokemonSearch(searchSpecificPokemon, setLoading, setUrl);
 
     const offset = 0; 
     const [limit, setLimit] = useState(20);
 
+    const [change, setChange] = useState<string>('');
+
+    useGetSpecificPokemon( pokemon, setLoading, setUrl);
+
     useGetSpecificType(setLoading, type, setPokemon);
 
-    useGetSpecificPokemon(pokemon, setLoading, setUrl);
-
-    useGetAllPokemons(searchSpecificPokemon, limit, offset, setPokemon);
+    useGetAllPokemons(limit, offset, setPokemon, query, setUrl);
 
     const handleOnClickMore = () => {
         setLimit(limit+20);
     }
 
-    const handleOnSearch = (pokemonTerm: string) => {
-        setSearch(pokemonTerm);
-    }
-
     const handleOnClickSearch = () => {
-        setSearchSpecificPokemon(search);
+        setSearchParams({query: change});
+        navigate(`/?query=${encodeURIComponent(change)}`)
     }
 
     const handleOnClickPokemonDesc = (pokeId: string) => {
         navigate('/pokemon/'+pokeId);
     }
+
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        e.preventDefault();
+        setChange(e.target.value);
+    }   
 
     return (
             <Container style={{display: 'flex', flexDirection: 'column', justifyContent: 'stretch'}}>
@@ -61,13 +61,21 @@ export function Home(){
                 </IconButton>
                 <Stack marginBottom={2} spacing={1} >
                     <Paper component='form' 
-                            sx={{ display: 'flex', alignItems: 'center', width: '100%'}}>
+                            sx={{ display: 'flex', alignItems: 'center', width: '100%'}}
+                            onSubmit={(e) => {
+                                e.preventDefault(); // Prevent page reload
+                                handleOnClickSearch(); // Trigger search logic
+                              }} >
                         <InputBase
-                            onChange={e => handleOnSearch(e.target.value)}
+                            onChange={e => {
+                                handleInputChange(e);
+                            }}
                             sx={{ ml: 1, flex: 1, height: 25}}
                             placeholder="Search Pokemon"
+                            type='text'
+                            value={change}
                         />
-                        <IconButton onClick={handleOnClickSearch} type='submit' style={{marginRight: 10}}>
+                        <IconButton onClick={handleOnClickSearch} style={{marginRight: 10}}>
                             <Search sx={{color: 'black'}}/>
                         </IconButton>
                     </Paper>

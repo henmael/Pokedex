@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetSpecificPokemonDesc, useGetSpecificPokemonSpecies } from "../hooks/fetchPokemon"
 import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
-import { Box, Card, CardMedia, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardMedia, Collapse, Container, Paper, Stack, Typography } from "@mui/material";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
 
@@ -41,12 +41,20 @@ export function SecondPage(){
     const [pokemon, setPokemon] = useState<SpecificPokemon>();
     const [pokemonEntry, setPokemonEntry] = useState<string[]>();
     useGetSpecificPokemonDesc(Number(pokemonId), setLoading, setPokemon);
+
+    const [checked, setChecked] = useState(false);
     
     useGetSpecificPokemonSpecies(Number(pokemonId), setLoading, setPokemonEntry);
+
+    let textButton = 'Display More'; 
 
     const [typeImageUrl, setTypeImageUrl] = useState<string[]>([]);
 
     const pokemonName = firstLetterUpperCase(pokemon?.name as string);
+
+    const handleChange = () => {
+        setChecked((prev) => !prev);
+      };
 
     useEffect(() => {
         const fetchTypeImages = async () => {
@@ -65,6 +73,10 @@ export function SecondPage(){
         fetchTypeImages();
     }, [pokemon, setTypeImageUrl]);
 
+    if (checked){
+        textButton = 'Minimize';
+    }
+
     if (loading){
         return (
             <Box display='flex' alignItems='center' justifyItems='center' height='100vh' margin={0}>
@@ -77,26 +89,25 @@ export function SecondPage(){
         <Container>
             <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center' >
                 <Typography variant="h4">{pokemonName}</Typography>
-                <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '30%', marginLeft: 'auto', marginRight: 'auto'}}>
+                <Card style={{backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
                 </Card>
-                <Box display='flex' gap={2} mt={2} maxWidth={200} maxHeight={200} marginRight='auto' marginLeft='auto'>
+                <Box display='flex' gap={2} mt={2} marginRight='auto' marginLeft='auto'>
                     {typeImageUrl.length > 2 ? (
                         ''
                     ) : typeImageUrl.map((image, index) => (
                         <CardMedia key={index} component='img' image={image}/>
                     ))}
                 </Box>
-                <Typography>
-                    Weight: {pokemon?.weight} kg <br/>
-                    Height: {pokemon?.height} m <br/>
-                </Typography>
-                <Paper sx={{padding: 5, backgroundColor: 'black'}}>
-                    {pokemonEntry && pokemonEntry.map((entryText) => (
-                        <Typography color="white">
-                            {entryText}
-                        </Typography>
-                    ))}
+                <Paper sx={{padding: 5, backgroundColor: 'black', borderRadius: 10, marginTop: 2}}>
+                    <Collapse in={checked} collapsedSize={350}>
+                        {pokemonEntry && pokemonEntry.map((entryText) => (
+                                    <Typography color="white" textAlign='left' marginBottom={2}>
+                                        {entryText}
+                                    </Typography>
+                                ))}
+                        </Collapse>
+                    <Button style={{color: '#CC0000'}} onClick={handleChange}>{textButton}</Button>
                 </Paper>
             </Box>
         </Container>

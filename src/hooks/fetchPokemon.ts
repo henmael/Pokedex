@@ -24,7 +24,7 @@ export function useGetAllPokemons(limit: number, offset: number, setPokemon: Rea
             }
         }
         fetchTypes();
-    }, [limit, offset, setPokemon, pokeTerm]);
+    }, [setUrl, limit, offset, setPokemon, pokeTerm]);
 }
 
 export function useGetSpecificPokemon(pokemon: Pokemon[],  setLoading: React.Dispatch<React.SetStateAction<boolean>>,

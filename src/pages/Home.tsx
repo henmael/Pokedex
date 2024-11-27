@@ -28,7 +28,6 @@ export function Home(){
     const [limit, setLimit] = useState(20);
 
     const [change, setChange] = useState<string>('');
-    const [click, setClick] = useState<string>('');
 
     useGetSpecificPokemon( pokemon, setLoading, setUrl);
 

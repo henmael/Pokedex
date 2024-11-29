@@ -88,7 +88,7 @@ export function useGetSpecificPokemonSpecies(pokemonId: number, setLoading: Reac
                     }).map((data: {flavor_text: string, version: {name: string}}) => { return {version: data.version.name, flavor_text: data.flavor_text}});
 
                     if (removeDuplicate.length > 0)
-                        setPokemonEntry((prev) => [...prev, ...removeDuplicate]);
+                        setPokemonEntry(removeDuplicate);
 
             }catch(error){
                 console.error('Error fetching types: ', error);

@@ -66,7 +66,7 @@ export function SecondPage(){
             );
 
             
-            setTypeImageUrl((prev) => [...prev, ...newTypeImages]);
+            setTypeImageUrl(newTypeImages);
         };
     
         fetchTypeImages();

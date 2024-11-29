@@ -1,7 +1,7 @@
 import { Search } from '@mui/icons-material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import { Box, Button, Container, IconButton, ImageList, InputBase, Paper, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';
@@ -20,9 +20,11 @@ export function Home(){
     const [loading, setLoading] = useState<boolean>(false);
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const query = searchParams.get('query') ?? '';
+    const queryType = searchParams.get('type') ?? '';
     
     const navigate = useNavigate();
+
+    const query = searchParams.get('query') ?? '';
 
     const offset = 0; 
     const [limit, setLimit] = useState(20);
@@ -31,9 +33,9 @@ export function Home(){
 
     useGetSpecificPokemon( pokemon, setLoading, setUrl);
 
-    useGetSpecificType(setLoading, type, setPokemon);
+    useGetSpecificType(setLoading, queryType, setPokemon);
 
-    useGetAllPokemons(limit, offset, setPokemon, query, setUrl);
+    useGetAllPokemons(limit, offset, setPokemon, query, setUrl, queryType);
 
     const handleOnClickMore = () => {
         setLimit(limit+20);
@@ -41,7 +43,7 @@ export function Home(){
 
     const handleOnClickSearch = () => {
         setSearchParams({query: change});
-        navigate(`/?query=${encodeURIComponent(change)}`)
+        navigate(`/?query=${encodeURIComponent(change)}`);
     }
 
     const handleOnClickPokemonDesc = (pokeId: string) => {
@@ -54,9 +56,15 @@ export function Home(){
         setChange(e.target.value);
     }   
 
+    const handlePokeballOnClick = () => {
+        setType(''); // Clear the type filter state
+        setSearchParams({}); // Clear all query parameters
+        navigate('/'); // Navigate to the base route to reset
+    }
+
     return (
             <Container style={{display: 'flex', flexDirection: 'column', justifyContent: 'stretch'}}>
-                <IconButton style={{ alignSelf: 'flex-start' }}>
+                <IconButton style={{ alignSelf: 'flex-start' }} onClick={handlePokeballOnClick}>
                     <CatchingPokemonIcon style={{ fontSize: '70px', color: '#CC0000' }}/>
                 </IconButton>
                 <Stack marginBottom={2} spacing={1} >

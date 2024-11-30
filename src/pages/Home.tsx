@@ -35,7 +35,13 @@ export function Home(){
 
     useGetSpecificType(setLoading, queryType, setPokemon);
 
-    useGetAllPokemons(limit, offset, setPokemon, query, setUrl, queryType);
+    useGetAllPokemons(limit, offset, setPokemon, query, setUrl, type);
+
+    useEffect(() => {
+        if (type){
+            setSearchParams({type: type});
+        }
+    },[type, setSearchParams]);
 
     const handleOnClickMore = () => {
         setLimit(limit+20);
@@ -50,7 +56,6 @@ export function Home(){
         navigate('/pokemon/'+pokeId);
     }
 
-
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         e.preventDefault();
         setChange(e.target.value);
@@ -59,7 +64,7 @@ export function Home(){
     const handlePokeballOnClick = () => {
         setType(''); // Clear the type filter state
         setSearchParams({}); // Clear all query parameters
-        navigate('/'); // Navigate to the base route to reset
+        setChange('');
     }
 
     return (

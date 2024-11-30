@@ -1,6 +1,7 @@
 import { FormControl, InputLabel, Select, SelectChangeEvent, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 import { getType } from "../getType";
+import { useSearchParams } from "react-router-dom";
 
 interface FormsProps{
     label: string;
@@ -15,6 +16,7 @@ type PokemonType = {
 
 export default function Forms({label, setType, type}: FormsProps){
     const [localtType, setLocalType] = useState<PokemonType[]>([]);
+    // const [_, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         async function fetchTypes() {
@@ -26,7 +28,7 @@ export default function Forms({label, setType, type}: FormsProps){
             }
         }
         fetchTypes();
-    }, []);
+    }, [setLocalType]);
 
     return (
         <FormControl fullWidth style={{backgroundColor: '#CC0000', borderRadius: 10}}>
@@ -35,7 +37,10 @@ export default function Forms({label, setType, type}: FormsProps){
             value={type}
             label={label}
             style={{color: 'white'}}
-            onChange={(e: SelectChangeEvent) => setType(e.target.value as string)}
+            onChange={(e: SelectChangeEvent) => {
+                setType(e.target.value as string)
+                // setSearchParams({type: e.target.value as string})
+            }}
         >
             {localtType.map((type, index) => (
                 <MenuItem key={index} value={type.name}>{type.name}</MenuItem>

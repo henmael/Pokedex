@@ -1,6 +1,5 @@
-import { Search } from '@mui/icons-material';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
-import { Box, Button, Container, IconButton, ImageList, InputBase, Paper, Stack } from '@mui/material';
+import { Box, Button, Container, IconButton, ImageList, Paper, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
@@ -24,18 +23,14 @@ export function Home(){
     
     const navigate = useNavigate();
 
-    const query = searchParams.get('query') ?? '';
-
     const offset = 0; 
     const [limit, setLimit] = useState(20);
-
-    const [change, setChange] = useState<string>('');
 
     useGetSpecificPokemon( pokemon, setLoading, setUrl);
 
     useGetSpecificType(setLoading, queryType, setPokemon);
 
-    useGetAllPokemons(limit, offset, setPokemon, query, setUrl, type);
+    useGetAllPokemons(limit, offset, setPokemon, setUrl, type);
 
     useEffect(() => {
         if (type){
@@ -47,24 +42,13 @@ export function Home(){
         setLimit(limit+20);
     }
 
-    const handleOnClickSearch = () => {
-        setSearchParams({query: change});
-        navigate(`/?query=${encodeURIComponent(change)}`);
-    }
-
     const handleOnClickPokemonDesc = (pokeId: string) => {
         navigate('/pokemon/'+pokeId);
-    }
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        e.preventDefault();
-        setChange(e.target.value);
-    }   
+    }  
 
     const handlePokeballOnClick = () => {
         setType(''); // Clear the type filter state
         setSearchParams({}); // Clear all query parameters
-        setChange('');
     }
 
     return (
@@ -72,27 +56,6 @@ export function Home(){
                 <IconButton style={{ alignSelf: 'flex-start' }} onClick={handlePokeballOnClick}>
                     <CatchingPokemonIcon style={{ fontSize: '70px', color: '#CC0000' }}/>
                 </IconButton>
-                <Stack marginBottom={2} spacing={1} >
-                    <Paper component='form' 
-                            sx={{ display: 'flex', alignItems: 'center', width: '100%'}}
-                            onSubmit={(e) => {
-                                e.preventDefault(); // Prevent page reload
-                                handleOnClickSearch(); // Trigger search logic
-                              }} >
-                        <InputBase
-                            onChange={e => {
-                                handleInputChange(e);
-                            }}
-                            sx={{ ml: 1, flex: 1, height: 25}}
-                            placeholder="Search Pokemon"
-                            type='text'
-                            value={change}
-                        />
-                        <IconButton onClick={handleOnClickSearch} style={{marginRight: 10}}>
-                            <Search sx={{color: 'black'}}/>
-                        </IconButton>
-                    </Paper>
-                </Stack>
                 <Box display='flex' gap={2} marginBottom={5} borderRadius={10}>
                     <Forms  label={'Type'} setType={setType} type={type}/>
                 </Box>

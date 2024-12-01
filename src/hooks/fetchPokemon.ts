@@ -6,24 +6,19 @@ import { getSpecificPokemonSearch } from "../api/getSpecificPokemonSearch";
 import { FlavorTextVersion, SpecificPokemon } from "../pages/Pokemon";
 import { getSpecificPokemonSpecies } from "../api/getSpecificPokemonSpecies";
 
-export function useGetAllPokemons(limit: number, offset: number, setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>, pokeTerm: string, 
+export function useGetAllPokemons(limit: number, offset: number, setPokemon: React.Dispatch<React.SetStateAction<Pokemon[]>>, 
                                 setUrl: React.Dispatch<React.SetStateAction<string[]>>, type: string ){
     useEffect(() => {
         async function fetchTypes() {
             try {
-                if (pokeTerm && !type){
-                    const data = await getSpecificPokemonSearch(pokeTerm);
-                    setUrl([data.data.sprites.front_default])
-                }else{
                     const data = await getPokemon(limit, offset);
                     setPokemon(data.data.results);
-                }  
             } catch (error) {
                 console.error('Error fetching types:', error);
             }
         }
         fetchTypes();
-    }, [setUrl, limit, offset, setPokemon, pokeTerm, type]);
+    }, [setUrl, limit, offset, setPokemon, type]);
 }
 
 export function useGetSpecificPokemon(pokemon: Pokemon[],  setLoading: React.Dispatch<React.SetStateAction<boolean>>,

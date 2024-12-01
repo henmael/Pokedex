@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetSpecificPokemonDesc, useGetSpecificPokemonSpecies } from "../hooks/fetchPokemon"
 import { useEffect, useState } from "react";
 import { PokeBallLoading } from "../utils/PokeBallLoading";
-import { Box, Button, Card, CardMedia, Chip, Collapse, Container, Paper, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardMedia, Chip, Collapse, Container, IconButton, Paper, Stack, Typography } from "@mui/material";
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export type SpecificPokemon = {
     id: number;
@@ -40,6 +41,8 @@ export function SecondPage(){
     const [pokemon, setPokemon] = useState<SpecificPokemon>();
     const [pokemonEntry, setPokemonEntry] = useState<FlavorTextVersion[]>([]);
     useGetSpecificPokemonDesc(Number(pokemonId), setLoading, setPokemon);
+
+    const navigate = useNavigate();
 
     const [checked, setChecked] = useState(false);
     
@@ -84,10 +87,19 @@ export function SecondPage(){
         )
     }
 
+    const handleOnClickBack = () => {
+            navigate('/');
+    }
+
     return (
         <Container>
             <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center' >
-                <Typography variant="h4">{pokemonName}</Typography>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+                    <IconButton onClick={handleOnClickBack}>
+                        <ArrowBackIcon fontSize="large" style={{color: 'white'}}/>
+                    </IconButton>
+                    <Typography variant="h4" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>{pokemonName}</Typography>
+                </Stack>
                 <Card style={{alignItems: 'center', justifyContent: 'center' ,backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <Typography textAlign='left' ml={2} fontSize={25} color='white'>#{pokemonId}</Typography>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>

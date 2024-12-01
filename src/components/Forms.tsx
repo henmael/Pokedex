@@ -1,7 +1,6 @@
 import { FormControl, InputLabel, Select, SelectChangeEvent, MenuItem } from "@mui/material";
 import { useState, useEffect } from "react";
 import { getType } from "../getType";
-import { useSearchParams } from "react-router-dom";
 
 interface FormsProps{
     label: string;

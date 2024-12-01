@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import { Home } from './pages/Home'
 import { SecondPage } from './pages/Pokemon'
 

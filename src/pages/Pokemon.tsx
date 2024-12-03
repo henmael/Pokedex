@@ -6,6 +6,7 @@ import { Box, Button, Card, CardMedia, Chip, Collapse, Container, IconButton, Pa
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Snow from '../assets/snow.gif'
 
 export type SpecificPokemon = {
     id: number;
@@ -92,15 +93,29 @@ export function SecondPage(){
     }
 
     return (
-        <Container>
+        <Container style={{ position: 'relative', minHeight: '100vh' }}>
+             <img
+                src={Snow}
+                alt="Animated GIF"
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    zIndex: -1
+                }}
+                />
             <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center' >
+           
                 <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">
                     <IconButton onClick={handleOnClickBack}>
                         <ArrowBackIcon fontSize="large" style={{color: 'white'}}/>
                     </IconButton>
                     <Typography variant="h4" sx={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>{pokemonName}</Typography>
                 </Stack>
-                <Card style={{alignItems: 'center', justifyContent: 'center' ,backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
+                <Card style={{alignItems: 'center', justifyContent: 'center', backgroundColor: 'black', borderRadius: 30, marginTop: 30, width: '100%', marginLeft: 'auto', marginRight: 'auto'}}>
                     <Typography textAlign='left' ml={2} fontSize={25} color='white'>#{pokemonId}</Typography>
                     <CardMedia component='img' image={pokemon?.sprites.front_default}/>
                 </Card>

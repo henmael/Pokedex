@@ -1,11 +1,12 @@
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import { Box, Button, Container, IconButton, ImageList, Paper, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PokeBallLoading } from '../utils/PokeBallLoading';
+import SantaHat from '../assets/santahapixel.svg'
 
 export type Pokemon = {
     name: string;
@@ -63,7 +64,22 @@ export function Home(){
                     <ImageList> 
                         {url.map((poke, index) => (
                             <Paper key={index} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
-                                {loading ? <PokeBallLoading/> : <img onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} src={poke ? poke : ''} style={{display: 'block', margin: 'auto', width: '150px', height: '150px'}}/>}
+                                {loading ? <PokeBallLoading/> : 
+                                    <div style={{position: 'relative', width: '150px', height: '150px', margin: 'auto'}}>
+                                        <img 
+                                        onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
+                                        src={poke ? poke : ''} 
+                                        style={{display: 'block', objectFit: 'contain', width: '100%', height: '100%'}}
+                                        alt='pokemon'/>
+                                        <img
+                                            src={SantaHat} style={{position: 'absolute', height: '20%', top: '30px', left: '45%', transform: 'translateX(-50%)',
+                                                width: '100%', zIndex: 1
+                                            }}
+                                        />
+                                        
+                                    </div>
+                                        
+                                        }
                             </Paper>
                         ))}
                     </ImageList>    

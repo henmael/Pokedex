@@ -1,6 +1,6 @@
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import { Box, Button, Container, IconButton, ImageList, Paper, Stack } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
 import { useGetSpecificType } from '../hooks/fetchTypes';

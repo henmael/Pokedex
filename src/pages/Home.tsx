@@ -63,16 +63,18 @@ export function Home(){
                 <Stack>
                     <ImageList> 
                         {url.map((poke, index) => (
-                            <Paper key={index} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignContent: 'center'}}>
+                            <Paper key={index} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignItems: 'center'}}>
                                 {loading ? <PokeBallLoading/> : 
-                                    <div style={{position: 'relative', width: '150px', height: '150px', margin: 'auto'}}>
+                                    <div style={{position: 'relative', margin: 'auto',
+                                        width: '300px',
+                                        height: '300px', }}>
                                         <img 
                                         onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
                                         src={poke ? poke : ''} 
-                                        style={{display: 'block', objectFit: 'contain', width: '100%', height: '100%'}}
+                                        style={{display: 'block', objectFit: 'contain', width: '300px', height: '250px', alignContent: 'center', justifyContent: 'center'}}
                                         alt='pokemon'/>
                                         <img
-                                            src={SantaHat} style={{position: 'absolute', height: '20%', top: '30px', left: '45%', transform: 'translateX(-50%)',
+                                            src={SantaHat} style={{position: 'absolute', height: '15%', top: '5px', left: '48%', transform: 'translateX(-50%)',
                                                 width: '100%', zIndex: 1
                                             }}
                                         />

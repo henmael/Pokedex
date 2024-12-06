@@ -1,5 +1,5 @@
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
-import { Box, Button, Container, Fade, IconButton, ImageList, Paper, Slide, Stack, Toolbar, useScrollTrigger } from '@mui/material';
+import { Box, Button, Container, Fade, IconButton, ImageList, Paper, useScrollTrigger } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
@@ -7,7 +7,7 @@ import { useGetSpecificType } from '../hooks/fetchTypes';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PokeBallLoading } from '../utils/PokeBallLoading';
 import SantaHat from '../assets/santahapixel.svg'
-import { ConstructionOutlined, KeyboardArrowUp } from '@mui/icons-material';
+import { KeyboardArrowUp } from '@mui/icons-material';
 
 export type Pokemon = {
     name: string;
@@ -109,7 +109,7 @@ export function Home(){
                 <Box
                     onClick={handleClick}
                     role="presentation"
-                    sx={{ borderRadius: 100,position: 'fixed', bottom: 16, right: 16, backgroundColor: 'red', width: 50, height: 50, justifyContent: 'center', alignContent: 'center', textAlign: 'center'}}
+                    sx={{ borderRadius: 100,position: 'fixed', bottom: 16, right: 16, backgroundColor: '#CC0000', width: 50, height: 50, justifyContent: 'center', alignContent: 'center', textAlign: 'center'}}
                 >
                     <KeyboardArrowUp fontSize='large'/>
                 </Box>

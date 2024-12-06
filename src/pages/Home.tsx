@@ -63,20 +63,18 @@ export function Home(){
                 <Stack>
                     <ImageList> 
                         {url.map((poke, index) => (
-                            <Paper key={index} square={false} sx={{height: 250, borderRadius: 3, marginBottom: 2, alignItems: 'center'}}>
+                            <Paper key={index} square={false} sx={{height: 200, borderRadius: 3, marginBottom: 2, alignItems: 'center'}}>
                                 {loading ? <PokeBallLoading/> : 
-                                    <div style={{position: 'relative', margin: 'auto',
-                                        width: '300px',
-                                        height: '300px', }}>
+                                    <div style={{position: 'relative', justifyItems: 'center', justifyContent: 'center',
+                                        width: '100px',
+                                        height: '200px'}}>
                                         <img 
                                         onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
                                         src={poke ? poke : ''} 
-                                        style={{display: 'block', objectFit: 'contain', width: '300px', height: '250px', alignContent: 'center', justifyContent: 'center'}}
+                                        style={{display: 'block', objectFit: 'contain', width: '150px', height: '200px', marginLeft: 10, marginRight: 10, alignItems: 'center', justifyItems: 'center'}}
                                         alt='pokemon'/>
                                         <img
-                                            src={SantaHat} style={{position: 'absolute', height: '15%', top: '5px', left: '48%', transform: 'translateX(-50%)',
-                                                width: '100%', zIndex: 1
-                                            }}
+                                            src={SantaHat} style={{position: 'absolute', height: '20%', width: '100%', top: '3%', marginLeft: 85, transform: 'translateX(-50%)'}}
                                         />
                                         
                                     </div>

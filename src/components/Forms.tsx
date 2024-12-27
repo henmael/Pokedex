@@ -15,7 +15,6 @@ type PokemonType = {
 
 export default function Forms({label, setType, type}: FormsProps){
     const [localtType, setLocalType] = useState<PokemonType[]>([]);
-    // const [_, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         async function fetchTypes() {
@@ -37,8 +36,7 @@ export default function Forms({label, setType, type}: FormsProps){
             label={label}
             style={{color: 'white'}}
             onChange={(e: SelectChangeEvent) => {
-                setType(e.target.value as string)
-                // setSearchParams({type: e.target.value as string})
+                setType(e.target.value as string);
             }}
         >
             {localtType.map((type, index) => (

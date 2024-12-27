@@ -6,7 +6,8 @@ import { Box, Button, Card, CardMedia, Chip, Collapse, Container, IconButton, Pa
 import { getSpecificType } from "../api/getSpecificTypePokemon";
 import { firstLetterUpperCase } from "../utils/firstLetterUpperCase";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import Snow from '../assets/snow.gif'
+import { initSnowAnimation, stopSnowAnimation } from "../components/SnowFlakes";
+import { dateDecember } from "../utils/dateDdecember";
 
 export type SpecificPokemon = {
     id: number;
@@ -76,6 +77,19 @@ export function SecondPage(){
         fetchTypeImages();
     }, [pokemon, setTypeImageUrl]);
 
+    useEffect(() => {
+        // Start the snow animation
+        if (dateDecember() === 11){
+            initSnowAnimation();
+        }
+
+        // Cleanup function
+        return () => {
+            // Stop the snow animation
+            stopSnowAnimation();
+        };
+    }, []); 
+
     if (checked){
         textButton = 'Minimize';
     }
@@ -94,19 +108,6 @@ export function SecondPage(){
 
     return (
         <Container style={{ position: 'relative', minHeight: '100vh' }}>
-             <img
-                src={Snow}
-                alt="Animated GIF"
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    zIndex: -1
-                }}
-                />
             <Box display='flex-column' alignContent='center' textAlign='center' justifyItems='center' >
            
                 <Stack direction="row" justifyContent="space-between" alignItems="center" width="100%">

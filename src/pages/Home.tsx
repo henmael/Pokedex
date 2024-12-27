@@ -1,5 +1,5 @@
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
-import { Box, Button, Container, Fade, IconButton, ImageList, Paper, useScrollTrigger } from '@mui/material';
+import { Box, Button, Container, Fade, IconButton, ImageList, Paper, Typography, useScrollTrigger } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Forms from '../components/Forms';
 import { useGetAllPokemons, useGetSpecificPokemon } from '../hooks/fetchPokemon';
@@ -9,6 +9,7 @@ import { PokeBallLoading } from '../utils/PokeBallLoading';
 import SantaHat from '../assets/santahapixel.svg'
 import { KeyboardArrowUp } from '@mui/icons-material';
 import { dateDecember } from '../utils/dateDdecember';
+import PokeBackCard from '../assets/pokemonCardBack.png'
 
 export type Pokemon = {
     name: string;
@@ -42,6 +43,8 @@ export function Home(){
       });
     }
   };
+
+  url.map(poke => console.log(poke))
 
     const queryType = searchParams.get('type') ?? '';
     
@@ -86,25 +89,29 @@ export function Home(){
                 </Box>
                         <ImageList> 
                             {url.map((poke, index) => (
+                                poke ? 
                                 <Paper key={index} square={false} sx={{height: 200, borderRadius: 3, marginBottom: 2, alignItems: 'center'}}>
                                     {loading ? <PokeBallLoading/> : 
                                         <div style={{position: 'relative', justifyItems: 'center', justifyContent: 'center',
                                             width: '100px',
                                             height: '200px'}}>
-                                            <img 
-                                            onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
-                                            src={poke ? poke : ''} 
-                                            style={{display: 'block', objectFit: 'contain', width: '150px', height: '200px', marginLeft: 10, marginRight: 10, alignItems: 'center', justifyItems: 'center'}}
-                                            alt='pokemon'/>
-                                            {dateDecember() === 11 ? (
-                                                <img
-                                                src={SantaHat} style={{position: 'absolute', height: '20%', width: '100%', top: '3%', marginLeft: 85, transform: 'translateX(-50%)'}}
-                                            />
-                                            ) : null}
+                                                <>
+                                                <img 
+                                                onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
+                                                src={poke} 
+                                                style={{display: 'block', objectFit: 'contain', width: '150px', height: '200px', marginLeft: 10, marginRight: 10, alignItems: 'center', justifyItems: 'center'}}
+                                                alt='pokemon'/>
+                                                {dateDecember() === 11 && (
+                                                    <img
+                                                    src={SantaHat} style={{position: 'absolute', height: '20%', width: '100%', top: '3%', marginLeft: 85, transform: 'translateX(-50%)'}}
+                                                    />
+                                                )}
+                                                </>
+                                    
                                         </div>
-                                            
-                                            }
+                                    }  
                                 </Paper>
+                                : null
                             ))}
                         </ImageList>
             <Fade in={scrollTrigger}>

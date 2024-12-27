@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { PokeBallLoading } from '../utils/PokeBallLoading';
 import SantaHat from '../assets/santahapixel.svg'
 import { KeyboardArrowUp } from '@mui/icons-material';
+import { dateDecember } from '../utils/dateDdecember';
 
 export type Pokemon = {
     name: string;
@@ -94,11 +95,12 @@ export function Home(){
                                             onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
                                             src={poke ? poke : ''} 
                                             style={{display: 'block', objectFit: 'contain', width: '150px', height: '200px', marginLeft: 10, marginRight: 10, alignItems: 'center', justifyItems: 'center'}}
-                                            alt='pokemon'/>
-                                            <img
+                                            alt={'POKEMON ID: '+poke.split('/').pop()?.split('.')[0] as string}/>
+                                            {dateDecember() === 11 ? (
+                                                <img
                                                 src={SantaHat} style={{position: 'absolute', height: '20%', width: '100%', top: '3%', marginLeft: 85, transform: 'translateX(-50%)'}}
                                             />
-                                            
+                                            ) : null}
                                         </div>
                                             
                                             }

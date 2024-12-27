@@ -95,7 +95,7 @@ export function Home(){
                                             onClick={() => handleOnClickPokemonDesc(poke.split('/').pop()?.split('.')[0] as string)} 
                                             src={poke ? poke : ''} 
                                             style={{display: 'block', objectFit: 'contain', width: '150px', height: '200px', marginLeft: 10, marginRight: 10, alignItems: 'center', justifyItems: 'center'}}
-                                            alt={'POKEMON ID: '+poke.split('/').pop()?.split('.')[0] as string}/>
+                                            alt='pokemon'/>
                                             {dateDecember() === 11 ? (
                                                 <img
                                                 src={SantaHat} style={{position: 'absolute', height: '20%', width: '100%', top: '3%', marginLeft: 85, transform: 'translateX(-50%)'}}
